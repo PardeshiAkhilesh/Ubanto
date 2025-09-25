@@ -9,11 +9,11 @@
 
 void list(char c,char *filename)
 {
-    DIR *dir;
+    DIR *dir; // DIR *dir; → pointer to a directory stream (used with opendir, readdir, closedir)
     int cnt=0;
-    struct dirent *entry;
-    struct stat buff;
-    if((dir=opendir(filename))==NULL)
+    struct dirent *entry; // struct dirent *entry; → each file/directory entry in the directory
+    struct stat buff; // struct stat buff; → (declared but not used here) could be used if you want file info (size, permissions, etc.)
+    if((dir=opendir(filename))==NULL) // opendir(filename) → tries to open the directory (e.g. "." for current dir).
     {
         printf("Directory not found\n");
         return;
@@ -21,22 +21,22 @@ void list(char c,char *filename)
     switch (c)
     {
         case 'f':
-            while((entry=readdir(dir)) != NULL)
+            while((entry=readdir(dir)) != NULL) // Reads each entry inside directory
             {
-                printf("%s\n",entry->d_name);
+                printf("%s\n",entry->d_name);  // entry->d_name gives the name (file.txt, folder, . , ..)
             }
             break;
         case 'n':
             while((entry=readdir(dir)) != NULL)
             {
-                cnt++;
+                cnt++; //Reads all entries one by one, increases cnt
             }
             printf("Total no. of entries = %d\n",cnt);
             break;
         case 'i':
             while((entry=readdir(dir)) != NULL)
-            {
-                printf("\n%s \t %ld\n",entry->d_name,entry->d_ino);
+            {                                      
+                printf("\n%s \t %ld\n",entry->d_name,entry->d_ino); //d_name → file name // d_ino → inode number (unique identifier for the file inside the filesystem)
             }
             break;
     }
