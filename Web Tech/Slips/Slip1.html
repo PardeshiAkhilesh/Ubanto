@@ -1,0 +1,64 @@
+<html>
+    <head>
+        <title>Project Management Form</title>
+        <style>
+             body {
+            background-color: yellow;   /* Background color */
+            font-family: Arial, sans-serif;
+        }
+
+        .project-form {
+            background-color: aqua;
+            width: 400px;
+            margin: auto;
+            padding: 20px;
+            border-radius: 5px;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+        </style>
+    </head>
+    <body>
+        <h2>Project Managemnt</h2>
+        <div class="project-form">
+            <form>
+                <labe;>
+                    Project Name
+                </label>
+                <input type="text" name="name" placeholder="Enter Your Project name">
+
+                <label>Assign to</label>
+                <select>
+                    <option value="1">Er Merry Petision</option>
+                    <option value="2">Er John</option>
+                    <option value="3">Er Reban</option>
+                </select>
+
+                <label>Start date</label>
+                <input type="date" name="start">
+
+                <label>End Date</label>
+                <input type="date" name="end">
+
+                <lable>Priority</lable>
+                <input type="radio" name="pro" value="high">high
+                <input type="radio" name="pro" value="medium">Medium
+                <input type="radio" name="pro" value="low">low
+
+                <label>Description</label>
+                <textarea rows="3" name="desc"></textarea>
+            </form>
+        </div>
+    </body>
+</html>
