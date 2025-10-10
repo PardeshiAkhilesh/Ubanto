@@ -1,184 +1,137 @@
-#include<stdio.h>
-#include<stdlib.h>
-#include<fcntl.h>
-#include<unistd.h>
-void search(char c, char *filename, char *pattern) {
-    int fd, i = 0, cnt = 0, j = 0;
-    char ch, buff[256];
-    char *p;
+#include <stdio.h>
+#include <unistd.h>     // exec, read
+#include <fcntl.h>      // O_RDONLY
+#include <stdlib.h>     // exit
+#include <string.h>     // strstr, strcmp
 
-    fd = open(filename, O_RDONLY);
-    if (fd == -1) {
-        printf("The file does not exist\n");
+void search(char c, char *s, char *fn)
+{
+    int handle, i = 1, cnt = 0, j = 0;
+    char ch, buff[80], *p;
+
+    if ((handle = open(fn, O_RDONLY)) == -1)
+    {
+        printf("File %s not found\n", fn);
         return;
     }
 
-    switch (c) {
-        case 'a': // print all lines with pattern
-            while (read(fd, &ch, 1) > 0) {
-                if (ch == '\n') {
-                    buff[j] = '\0';
-                    j = 0;
-                    if (strstr(buff, pattern) != NULL) {
-                        printf("%d: %s\n", i, buff);
-                    }
-                    i++;
-                } else {
-                    buff[j++] = ch;
-                }
-            }
-            break;
-
-        case 'c': // count occurrences
-            while (read(fd, &ch, 1) > 0) {
-                if (ch == '\n') {
-                    buff[j] = '\0';
-                    j = 0;
-                    if (strstr(buff, pattern) != NULL) {
-                        p = buff;
-                        while ((p = strstr(p, pattern)) != NULL) {
-                            cnt++;
-                            p++;
-                        }
-                    }
-                } else {
-                    buff[j++] = ch;
-                }
-            }
-            printf("The total occurrences: %d\n", cnt);
-            break;
-
-        default:
-            printf("Invalid option. Use 'a' or 'c'.\n");
-    }
-
-    close(fd);
-}
-    int handles,i=0,cnt=0,n,j=0;
-    char ch,buff[80],*f;
-    if((handles=open(fn,O_RDONLY))==-1){
-        printf("the file does exist");
-        return;
-    }
     switch (c)
     {
     case 'f':
-    while(read(handles,&ch,1)==0){
-        if(ch=='\n'){
-
-            buff[j]='\0';
-            j=0;
-            if(strstr(buff,s)!=NULL){
-                printf("%d %s",i,buff);
-                break;
-            }
-            i++;
-
-        }else{
-            buff[j++]=ch;
-
-        }
-        
-    }
-    
-        /* code */
-        break;
-        case 'c':
-        while(read(handles,&ch,1)==0){
-            if(ch=='\n'){
-                buff[j]='\0';
-            j=0;
-            if(strstr(buff,s)!=NULL){
-p=buff;
-while((p=strstr(p,s))!=NULL){
-    cnt++;
-    p++;
-}
-
-}
-            }else
-            {
-                buff[j++]=ch;
-            }
-            printf("The occurence %d",cnt);
-
-            
-        }
-        break;
-        case 'a':
-        while (read(handles,&ch,1)!=0)
+        while (read(handle, &ch, 1) != 0)
         {
-            if(ch=='\n')
+            if (ch == '\n')
             {
-                buff[j]='\0';
-                j=0;
-
-                if(strstr(buff,s)!=NULL)
-                printf("%d %s",i,buff);
+                buff[j] = '\0';
+                j = 0;
+                if (strstr(buff, s) != NULL)
+                {
+                    printf("%d : %s\n", i, buff);
+                    break;
+                }
                 i++;
             }
             else
-            {
-                buff[j++]=ch;
-            }
-            
-            /* code */
+                buff[j++] = ch;
         }
-        close(handles);
-        
-
-    
-    default:
         break;
+
+    case 'c':
+        while (read(handle, &ch, 1) != 0)
+        {
+            if (ch == '\n')
+            {
+                buff[j] = '\0';
+                j = 0;
+                if (strstr(buff, s) != NULL)
+                {
+                    p = buff;
+                    while ((p = strstr(p, s)) != NULL)
+                    {
+                        cnt++;
+                        p++;
+                    }
+                }
+            }
+            else
+                buff[j++] = ch;
+        }
+        printf("Total No. of Occurrences = %d\n", cnt);
+        break;
+
+    case 'a':
+        while (read(handle, &ch, 1) != 0)
+        {
+            if (ch == '\n')
+            {
+                buff[j] = '\0';
+                j = 0;
+                if (strstr(buff, s) != NULL)
+                    printf("%d : %s\n", i, buff);
+                i++;
+            }
+            else
+                buff[j++] = ch;
+        }
     }
 
+    close(handle);
 }
-void main(){
-    int command[80],t1[23],t2[23],t3[53],t4[34];
-    system("clear");
+
+int main()
+{
+    char command[80], t1[20], t2[20], t3[20], t4[20];
     int n;
-    while(1){
-        printf("Myshells");
-        fgets(command,80,stdin);
+
+    system("clear");
+
+    while (1)
+    {
+        printf("myShell$ ");
         fflush(stdin);
-        n=sscanf(command,"%s %s %s %s",t1,t2,t3,t4);
+        fgets(command, 80, stdin);
+
+        n = sscanf(command, "%s %s %s %s", t1, t2, t3, t4);
+
         switch (n)
         {
         case 1:
-        if(strcmp(t1,"exit")==0){
-            exit(0);
-            
-        }
-        if(!fork()){
-
-            execlp(t1,t1,NULL);
-            perror(t1);
-        }
+            if (strcmp(t1, "exit") == 0)
+                exit(1);
+            if (!fork())
+            {
+                execlp(t1, t1, NULL);
+                perror(t1);
+            }
             break;
+
         case 2:
-        if(!fork()){
-            execlp(t1,t1,t2,NULL);
-            perror(t1);
-        }
-        break;
-        case 3:
-        if(strcmp(t1,"search")==0){
-            search(t2,t3,t4);
-
-        }
-        if(!fork()){
-            execlp(t1,t1,t2,t3,NULL);
-            perror(t1);
-        }
-        break;
-        case 4:
-        if(!fork()){
-            execlp(t1,t1,t2,t3,t4,NULL);
-            perror(t1);
-
-        }
-        default:printf("Invalid");
+            if (!fork())
+            {
+                execlp(t1, t1, t2, NULL);
+                perror(t1);
+            }
             break;
+
+        case 3:
+            if (!fork())
+            {
+                execlp(t1, t1, t2, t3, NULL);
+                perror(t1);
+            }
+            break;
+
+        case 4:
+            if (strcmp(t1, "search") == 0)
+                search(t2[0], t3, t4);
+            else
+            {
+                if (!fork())
+                {
+                    execlp(t1, t1, t2, t3, t4, NULL);
+                    perror(t1);
+                }
+            }
         }
     }
 }

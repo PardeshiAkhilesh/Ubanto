@@ -1,31 +1,32 @@
 #include<stdio.h>
-int main()
-{
-    int arr[3] = {3,2,4};
-    int n = sizeof(arr) / sizeof(arr[0]);
-    int count = 0;
-    int a;
-    for(int i=0;i<n-1;i++)
+int main(){
+    int sum_wait=0,sum_turnaround=0,at[10],bt[10],priority[10],remain,smallest,n,time;
+    printf("Enter the p0");
+    scanf("%d",&n);    
+    remain=n;
+    for (int i = 0; i < n; i++)
     {
-        for(int j=i+1;j<n;j++)
-        {
-            a=arr[i]+arr[j];
-            int isPrime=1;
-            for(int k=2;k<=a/2;k++)
-            {
-                if(a%k==0)
-                {
-                    isPrime=0;
-                    break;
-                }
-            }
-            if(isPrime==1)
-            {
-                count++;
-                printf("%d %d\n",arr[i],arr[j]);
-            }
-        }
+        printf("Enter the at,bt,priority of %d process",i+1);
+        scanf("%d%d%d",&at[i],&bt[i],&priority[i]);
+        /* code */
     }
-    printf("%d" ,count); 
-    printf("\n");
+    priority[9]=11;
+    for(time=0;remain=0;)
+    {
+        smallest=0;
+        for (int i = 0; i < n; i++)
+        {
+            if(at[i]<time&&priority[i]<priority[smallest]&&bt[i]>0){
+                smallest=i;
+            }
+            /* code */
+        }
+        time+=bt[smallest];
+        remain--;
+        sum_wait+=time-at[smallest]-bt[smallest];
+        sum_turnaround+=time-at[smallest];
+        bt[smallest]=0;
+    }
+    printf("%d%d",sum_wait,sum_turnaround);
+    
 }
